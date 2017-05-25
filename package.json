@@ -4,7 +4,7 @@
   "description": "this a twitter bot that handles retweeting post, favoriting post, and reply to follower thanks to risingstack.com for the tutorial",
   "main": "bot.js",
   "scripts": {
-    "start": "bot.js",
+    "start": "node bot.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "mayomi",
