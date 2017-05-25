@@ -4,7 +4,7 @@ var config = require('./config.js');
 //Pass the configuration (consumer and access tokens) of our Twitter application in config.js to twit
 var Twitter  = new twit(config);
 
-vat retweet = function(){
+var retweet = function(){
   var params = {
     q: '#nodejs, #Nodejs',
     reqult_type: 'recent',
@@ -18,7 +18,7 @@ vat retweet = function(){
       var retweetID = data.statuses[0].id_str;
       //tell twitter to retweet
       Twitter.post('statuses/retweet/:id',{
-        id: retweetId
+        id: retweetID
       }, function(err, response){
         if(response){
           console.log('retweeted!!');
@@ -83,4 +83,36 @@ setInterval(favoriteTweet, 3000000);
 function ranDom(arr){
   var index = Math.floor(Math.random()*arr.length);
   return arr[index];
+}
+
+//use stream api for interacting with a user
+
+var stream = Twitter.stream('user');
+
+//when someone follows
+stream.on('follow', followed);
+// ...trigger the callback
+function followed(event){
+  console.log('Follow event is running');
+  //get their twitter handler
+  var name = event.source.name,
+      screenName = event.source.screen_name;
+
+      //function that replies back to the user who followed
+      tweetNow('@' + screenName + ' Thank you for the follow up.');
+}
+
+//function definition to tweet back to user who followed
+function tweetNow(tweetTxt){
+  var tweetNow = {
+    status: tweetTxt
+  }
+  Twitter.post('statuses/update', tweet, function(err, data, response){
+    if(err){
+      console.log('error in replying');
+    }
+    else{
+      console.log('gratitude shown successfully');
+    }
+  });
 }
